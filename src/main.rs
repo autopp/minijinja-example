@@ -1,3 +1,4 @@
+use indexmap::indexmap;
 use minijinja::Environment;
 
 fn main() {
@@ -48,6 +49,19 @@ fn main() {
             }
         })
         .unwrap();
+
+    println!("\n{}", result);
+
+    // Example with indexmap
+    env.add_template(
+        "indexmap",
+        "Game: {{ game.name }}\nDescription: {{ game.description }}",
+    )
+    .unwrap();
+
+    let tmpl = env.get_template("indexmap").unwrap();
+    let map = indexmap! { "name" => "Dominion", "description" => "Deck building" };
+    let result = tmpl.render(minijinja::context! { game => map }).unwrap();
 
     println!("\n{}", result);
 }
